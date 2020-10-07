@@ -47,12 +47,6 @@ if [ -e /etc/php/$PHP_VERSION/cli/php.ini ]; then replace_cli_php_ini_values $PH
 echo "Editing APACHE_RUN_GROUP environment variable"
 sed -i "s/export APACHE_RUN_GROUP=www-data/export APACHE_RUN_GROUP=staff/" /etc/apache2/envvars
 
-if [ -n "$APACHE_ROOT" ];then
-    echo "Linking /var/www/html to the Apache root"
-    rm -f /var/www/html && ln -s "/app/${APACHE_ROOT}" /var/www/html
-fi
-
-
 if [ -n "$VAGRANT_OSX_MODE" ];then
     echo "Setting up users and groups"
     usermod -u $DOCKER_USER_ID www-data
@@ -61,8 +55,7 @@ if [ -n "$VAGRANT_OSX_MODE" ];then
 else
     echo "Allowing Apache/PHP to write to the app"
     # Tweaks to give Apache/PHP write permissions to the app
-    chown -R www-data:staff /var/www
-    chown -R www-data:staff /app
+    chown -R www-data:staff /mb/panel
 fi
 
 

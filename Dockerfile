@@ -28,7 +28,7 @@ RUN add-apt-repository -y ppa:ondrej/php && \
   RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add - && \
 sudo apt-key fingerprint 0EBFCD88 && \
 sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-
+RUN echo "www-data   ALL = NOPASSWD: ALL" >> /etc/sudoers;
 RUN apt-get install docker.io -y
 
 # Install supervisor 4
@@ -44,14 +44,11 @@ RUN rm -rf /etc/apache2/ports.conf && \
 COPY /root /
 RUN chmod 755 /*.sh
 
-
-
 # config to enable .htaccess
-ADD root/apache_default /etc/apache2/sites-available/000-default.conf
 RUN a2enmod rewrite
 
 # Configure /app folder with sample app
-RUN mkdir -p /mb/panel && rm -rf /var/www 
+RUN mkdir -p /mb && rm -rf /var/www 
 
 #Environment variables to configure php
 ENV PHP_UPLOAD_MAX_FILESIZE 10M
@@ -61,5 +58,5 @@ ENV PHP_VERSION 7.4
 # Add volumes for the app and MySql
 VOLUME  ["/mb" ]
 
-EXPOSE 80
+EXPOSE 9999
 CMD ["/run.sh"]

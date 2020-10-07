@@ -59,4 +59,5 @@ ENV PHP_VERSION 7.4
 VOLUME  ["/mb" ]
 
 EXPOSE 9999
+HEALTHCHECK --timeout=10s CMD curl --silent --fail "http://127.0.0.1:9999/ping"
 CMD ["/run.sh"]

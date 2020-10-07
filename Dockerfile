@@ -29,7 +29,7 @@ RUN add-apt-repository -y ppa:ondrej/php && \
 sudo apt-key fingerprint 0EBFCD88 && \
 sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
 
-RUN apt-get install docker.io
+RUN apt-get install docker.io -y
 
 # Install supervisor 4
 RUN curl -L https://pypi.io/packages/source/s/supervisor/supervisor-${SUPERVISOR_VERSION}.tar.gz | tar xvz && \

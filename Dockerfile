@@ -36,16 +36,18 @@ RUN curl -L https://pypi.io/packages/source/s/supervisor/supervisor-${SUPERVISOR
   cd supervisor-${SUPERVISOR_VERSION}/ && \
   python3 setup.py install
 
+RUN rm -rf /etc/apache2/ports.conf && \
+	rm -rf /etc/apache2/apache2.conf && \
+	rm -rf /etc/apache2/sites-available/000-default.conf
+	
 # Add image configuration and scripts
-ADD supporting_files/start-apache2.sh /start-apache2.sh
-ADD supporting_files/run.sh /run.sh
+COPY /root /
 RUN chmod 755 /*.sh
-ADD supporting_files/supervisord-apache2.conf /etc/supervisor/conf.d/supervisord-apache2.conf
-ADD supporting_files/supervisord.conf /etc/supervisor/supervisord.conf
+
 
 
 # config to enable .htaccess
-ADD supporting_files/apache_default /etc/apache2/sites-available/000-default.conf
+ADD root/apache_default /etc/apache2/sites-available/000-default.conf
 RUN a2enmod rewrite
 
 # Configure /app folder with sample app
